@@ -1,17 +1,16 @@
-from prettytable import PrettyTable as _pt
-from xml.etree.ElementTree import Element as _elem, SubElement as _selem, tostring as _tostr
-from xml.dom import minidom as _minidom
-import datetime as _datetime
-import json as _json
-import yaml as _yaml
-import logging as _logging
-import os as _os
-import zipfile as _zipfile
-import aiofiles as _aiofiles
-from enum import IntEnum as _intEnum
+import datetime
+import json
+import yaml
+import logging
+import os
+import zipfile
+import aiofiles
+from enum import IntEnum
+from prettytable import PrettyTable
+from xml.etree.ElementTree import Element, SubElement, tostring
+from xml.dom import minidom
 
-
-class LogLevel(_intEnum):
+class LogLevel(IntEnum):
     NOTSET = 0
     DEBUG = 10
     INFO = 20
@@ -21,65 +20,64 @@ class LogLevel(_intEnum):
     FATAL = 50
     CRITICAL = FATAL
 
-
 class Moon:
     class Presets:
-        class CLang(_logging.Formatter):
+        class CLang(logging.Formatter):
             def format(self, record):
                 levelname = record.levelname
                 filename = record.filename
                 lineno = record.lineno
                 message = record.getMessage()
 
-                if record.levelno == _logging.DEBUG:
+                if record.levelno == logging.DEBUG:
                     levelname = 'D'
-                elif record.levelno == _logging.INFO:
+                elif record.levelno == logging.INFO:
                     levelname = 'I'
-                elif record.levelno == _logging.WARNING:
+                elif record.levelno == logging.WARNING:
                     levelname = 'W'
-                elif record.levelno == _logging.ERROR:
+                elif record.levelno == logging.ERROR:
                     levelname = 'E'
-                elif record.levelno == _logging.CRITICAL:
+                elif record.levelno == logging.CRITICAL:
                     levelname = 'F'
 
                 return f"{filename}:{lineno}: {levelname}: {message}"
 
-        class Json(_logging.Formatter):
+        class Json(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
-                return _json.dumps(log_data)
+                return json.dumps(log_data)
 
-        class Csv(_logging.Formatter):
+        class Csv(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
                 return ','.join(log_data.values())
 
-        class Table(_logging.Formatter):
+        class Table(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
 
-                table = _pt()
+                table = PrettyTable()
                 table.field_names = log_data.keys()
                 table.add_row(log_data.values())
 
                 return str(table)
 
-        class Html(_logging.Formatter):
+        class Html(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
@@ -87,24 +85,24 @@ class Moon:
                 html_log = f"<p>{', '.join(f'<strong>{k}:</strong> {v}' for k, v in log_data.items())}</p>"
                 return html_log
 
-        class Xml(_logging.Formatter):
+        class Xml(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
 
-                root = _elem('log')
+                root = Element('log')
                 for key, value in log_data.items():
-                    _selem(root, key).text = str(value)
+                    SubElement(root, key).text = str(value)
 
-                return _minidom.parseString(_tostr(root)).toprettyxml(indent="  ")
+                return minidom.parseString(tostring(root)).toprettyxml(indent="  ")
 
-        class Markdown(_logging.Formatter):
+        class Markdown(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
@@ -112,49 +110,49 @@ class Moon:
                 markdown_log = '\n'.join([f"**{k}:** {v}" for k, v in log_data.items()])
                 return markdown_log
 
-        class Yaml(_logging.Formatter):
+        class Yaml(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
-                return _yaml.dump(log_data, default_flow_style=False)
+                return yaml.dump(log_data, default_flow_style=False)
 
-        class Syslog(_logging.Formatter):
+        class Syslog(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
                 return f"{log_data['timestamp']} {log_data['level']} {log_data['message']}"
 
-        class JsonIndented(_logging.Formatter):
+        class JsonIndented(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
-                return _json.dumps(log_data, indent=2)
+                return json.dumps(log_data, indent=2)
 
-        class Logstash(_logging.Formatter):
+        class Logstash(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    '@timestamp': _datetime.datetime.utcnow().isoformat(),
+                    '@timestamp': datetime.datetime.utcnow().isoformat(),
                     'loglevel': record.levelname,
                     'message': record.getMessage(),
                     'logger_name': record.name,
                     'path': record.pathname,
                     'line_number': record.lineno
                 }
-                return _json.dumps(log_data)
+                return json.dumps(log_data)
 
-        class SimpleHtml(_logging.Formatter):
+        class SimpleHtml(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
@@ -165,16 +163,16 @@ class Moon:
 
                 return html_log
 
-        class ShortJson(_logging.Formatter):
+        class ShortJson(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
-                return _json.dumps(log_data, separators=(',', ':'))
+                return json.dumps(log_data, separators=(',', ':'))
 
-        class ColoredConsole(_logging.Formatter):
+        class ColoredConsole(logging.Formatter):
             COLORS = {
                 'INFO': '\033[92m',  # Green
                 'WARNING': '\033[93m',  # Yellow
@@ -186,14 +184,14 @@ class Moon:
                 log_message = super().format(record)
                 return f"{self.COLORS.get(record.levelname, '')}{log_message}{self.RESET}"
 
-        class DelimiterSeparatedJson(_logging.Formatter):
+        class DelimiterSeparatedJson(logging.Formatter):
             def format(self, record):
                 log_data = {
-                    'timestamp': _datetime.datetime.utcnow().isoformat(),
+                    'timestamp': datetime.datetime.utcnow().isoformat(),
                     'level': record.levelname,
                     'message': record.getMessage()
                 }
-                return _json.dumps(log_data, separators=(',', ':'))
+                return json.dumps(log_data, separators=(',', ':'))
 
     def __init__(self, name=__name__, log_file='logger.log', stream_handler: bool = True, file_handler: bool = True, disabled: bool = False, zipsize: int | None = 1024, stream_level: int = LogLevel.DEBUG, file_level: int = LogLevel.DEBUG):
         self.name = name
@@ -202,49 +200,47 @@ class Moon:
         self.file_level = file_level
         self.stream_level = stream_level
 
-        self.logger = _logging.getLogger(name)
+        self.logger = logging.getLogger(name)
         self.logger.setLevel(level=self.stream_level)
         self.logger.disabled = disabled
 
-        self.default_formatter = _logging.Formatter("[{name}] [{asctime}] - [{levelname}]: {message}", style='{')
+        self.default_formatter = logging.Formatter("[{name}] [{asctime}] - [{levelname}]: {message}", style='{')
 
         self.add_stream_handler() if stream_handler else None
         self.add_file_handler() if file_handler else None
 
     def add_stream_handler(self):
-        stream_handler = _logging.StreamHandler()
+        stream_handler = logging.StreamHandler()
         stream_handler.setLevel(self.stream_level)
         stream_handler.setFormatter(self.default_formatter)
         self.logger.addHandler(stream_handler)
 
-    def add_file_handler(self, level=_logging.DEBUG):
-        file_handler = _logging.FileHandler(self.log_file)
+    def add_file_handler(self, level=logging.DEBUG):
+        file_handler = logging.FileHandler(self.log_file)
         file_handler.setLevel(self.file_level)
         file_handler.setFormatter(self.default_formatter)
         self.logger.addHandler(file_handler)
 
-    async def archive_file(self, size):
-        file_size_bytes = _os.path.getsize(self.log_file)
-        if file_size_bytes > size * 1024:
-            archive_path = f"{self.log_file}.zip"
+    async def archive(self):
+        archive_path = f"{self.log_file}.zip"
 
-            async with _aiofiles.open(self.log_file, 'rb') as file:
-                async with _aiofiles.open(archive_path, 'wb') as zipf:
-                    async with _zipfile.ZipFile(zipf, 'w') as zip_file:
-                        zip_file.writestr(_os.path.basename(self.log_file), await file.read())
+        async with aiofiles.open(self.log_file, 'rb') as file:
+            async with aiofiles.open(archive_path, 'wb') as zipf:
+                async with zipfile.ZipFile(zipf, 'w') as zip_file:
+                    zip_file.writestr(os.path.basename(self.log_file), await file.read())
 
-            _os.remove(self.log_file)
+        os.remove(self.log_file)
 
         return self
 
     def set_log_format(self, log_format):
-        self.default_formatter = _logging.Formatter(log_format, style='{')
+        self.default_formatter = logging.Formatter(log_format, style='{')
 
         for handler in self.logger.handlers:
             handler.setFormatter(self.default_formatter)
 
     def add_formatter(self, formatter):
-        handler = _logging.StreamHandler()
+        handler = logging.StreamHandler()
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
 
@@ -289,5 +285,5 @@ class Moon:
     def reset_format(self) -> None:
         self.set_log_format(self.default_formatter)
 
-    def base_logger(self) -> _logging.Logger:
+    def base_logger(self) -> logging.Logger:
         return self.logger
