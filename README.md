@@ -52,7 +52,7 @@ Make sure you have the following prerequisites installed on your system:
 
 To get your Telegram User ID, follow these steps:
 
-1. Start a chat with [GetMyIdBot](https://t.me/getmyid_bot)) on Telegram.
+1. Start a chat with [GetMyIdBot](https://t.me/getmyid_bot) on Telegram.
 
 2. Click on the "Start" button.
 
