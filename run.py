@@ -14,7 +14,7 @@ class Starter:
         self.utils = Utils
         self.strings: dict = {
             "text": "Run as {}@{}: {}",
-            "banner_text": "Hayes 1.3"
+            "banner_text": "HayesUB 1.3"
         }
         self.me = None
         self.login = self.get_login()
