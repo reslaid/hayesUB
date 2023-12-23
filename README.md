@@ -73,7 +73,22 @@ Now that you've configured HayesUB and obtained your Telegram User ID, you're re
     ```bash
     python3 -m run
     ```
+## Updating HayesUB
 
+To update HayesUB to the latest version, use the following commands:
+
+- **For Windows:**
+
+    ```bash
+    python -m update
+    ```
+
+- **For Linux:**
+
+    ```bash
+    python3 -m update
+    ```
+    
 Now, HayesUB should be up and running on your machine. You can explore the additional functionality provided by the userbot.
 
 Feel free to refer to the [HayesUB GitHub repository](https://github.com/reslaid/hayesUB) for more details and updates. If you encounter any issues during the installation or have questions, please check the repository's documentation or create an issue on GitHub for assistance.
