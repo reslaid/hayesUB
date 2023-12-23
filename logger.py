@@ -10,6 +10,7 @@ from prettytable import PrettyTable
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
 
+
 class LogLevel(IntEnum):
     NOTSET = 0
     DEBUG = 10
@@ -19,6 +20,7 @@ class LogLevel(IntEnum):
     ERROR = 40
     FATAL = 50
     CRITICAL = FATAL
+
 
 class Moon:
     class Presets:
