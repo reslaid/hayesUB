@@ -82,9 +82,14 @@ class Module:
         return await Module.client.get_me()
 
     @staticmethod
+    async def get_command(event):
+        message_parts = event.message.text.split(' ')
+        return message_parts[0]
+
+    @staticmethod
     async def get_args(event, maxsplit=15):
-        message: list = event.message.text.split(' ', maxsplit=maxsplit)
-        return message[1:]
+        message_parts = event.message.text.split(' ', maxsplit=maxsplit)
+        return message_parts[1:]
 
     @classmethod
     def get_logger(cls, name: str | None = None, filename: str | None = "module.log", formatter: Moon.Presets = Moon.Presets.Syslog()) -> Moon:
