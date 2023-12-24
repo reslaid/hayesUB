@@ -57,9 +57,11 @@ Make sure you have the following prerequisites installed on your system:
 ## Configuring HayesUB
 
 1. Open `config.cfg` in any text editor convenient for you.
- **OR**
 
-1. Use built-in authorization
+-Or
+
+1. Use auth module
+
 **For Windows:**
    ```bash
    python -m auth
