@@ -65,12 +65,12 @@ Make sure you have the following prerequisites installed on your system:
    ```
    
 **For Linux/Termux:**
-    
+
     ```bash
-    python3 -m auth
+python3 -m auth
     ```
 
-4. Change the following parameters according to your Telegram account:
+2. Change the following parameters according to your Telegram account:
     - `api_id`: Your Telegram API ID (get it from [my.telegram.org](https://my.telegram.org/))
     - `api_hash`: Your Telegram API Hash (get it from [my.telegram.org](https://my.telegram.org/))
     - `api_token`: Your Telegram API Token (get it from [BotFather](https://core.telegram.org/bots#botfather))
