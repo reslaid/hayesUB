@@ -373,13 +373,14 @@ class Utils:
         app_version: str = config.get('args', 'app_version')
         lang_code: str = config.get('args', 'lang_code')
         entity_cache_limit: int = config.getint('args', 'entity_cache_limit')
-        modules_repo: str = config.get('git', 'modules')
         auto_update: bool = config.getboolean('git', 'auto_update')
         module_auto_update: bool = config.getboolean('git', 'module_auto_update')        
         ModuleActions: bool = config.getboolean('logging', 'module')
         LoaderActions: bool = config.getboolean('logging', 'loader')
         ClientActions: bool = config.getboolean('logging', 'client')
         UtilsActions: bool = config.getboolean('logging', 'utils')
+
+        modules_repo: str = 'https://raw.githubusercontent.com/reslaid/modules/main'
 
         def getval(section: str, value: str) -> str:
             return Utils.Config.config.get(section, value)
