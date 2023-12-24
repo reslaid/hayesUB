@@ -11,7 +11,7 @@ class Updater:
         self.base_url: str = "https://raw.githubusercontent.com/reslaid/hayesUB/main/"
         self.repo_url: str = "https://api.github.com/repos/reslaid/hayesUB/contents/"
         self.session: aiohttp.ClientSession = None
-        self.valid_extensions = {".py", ".pyc", ".sh", ".bat", ".txt"}
+        self.valid_extensions = [".py", ".pyc", ".sh", ".bat", ".txt"]
         self.files_to_update: list = []
         self.repository_files: list = []
 
@@ -20,7 +20,7 @@ class Updater:
 
     async def update_files_list(self):
         all_files = [f for f in os.listdir(os.getcwd()) if os.path.isfile(os.path.join(os.getcwd(), f))]
-        self.files_to_update = [file for file in all_files if any(file.endswith(ext) for ext in self.valid_extensions)]
+        self.files_to_update = [file for file in all_files if any(file.lower().endswith(ext) for ext in self.valid_extensions)]
         self.repository_files = await self.get_repository_files()
 
     async def close_session(self):
