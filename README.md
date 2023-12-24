@@ -56,6 +56,16 @@ Make sure you have the following prerequisites installed on your system:
 
 ## Configuring HayesUB
 
+-    **First way**
+1. Open the `config.cfg` file with any editor convenient for you
+
+2. Change the following parameters according to your Telegram account:
+    - `api_id`: Your Telegram API ID (get it from [my.telegram.org](https://my.telegram.org/))
+    - `api_hash`: Your Telegram API Hash (get it from [my.telegram.org](https://my.telegram.org/))
+    - `api_token`: Your Telegram API Token (get it from [BotFather](https://core.telegram.org/bots#botfather))
+    - `admin_id`: Your Telegram User ID (get it from [GetMyIdBot](https://t.me/getmyid_bot))
+
+-    **Second way**
 1. Use auth module
 
 **For Windows:**
@@ -69,12 +79,6 @@ Make sure you have the following prerequisites installed on your system:
    ```bash
    python3 -m auth
    ```
-
-2. Change the following parameters according to your Telegram account:
-    - `api_id`: Your Telegram API ID (get it from [my.telegram.org](https://my.telegram.org/))
-    - `api_hash`: Your Telegram API Hash (get it from [my.telegram.org](https://my.telegram.org/))
-    - `api_token`: Your Telegram API Token (get it from [BotFather](https://core.telegram.org/bots#botfather))
-    - `admin_id`: Your Telegram User ID (get it from [GetMyIdBot](https://t.me/getmyid_bot))
 
 ## Getting Your Telegram User ID
 
