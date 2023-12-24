@@ -28,6 +28,8 @@ class Starter:
                 self.updater.update_all_files()
             )
 
+        self.clear_console()
+
         if self.utils.Config.module_auto_update:
             asyncio.run(
                 self.module_updater.update_all_files()
