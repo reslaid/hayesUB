@@ -9,14 +9,15 @@ class Updater:
     def __init__(self):
         self.base_url: str = "https://raw.githubusercontent.com/reslaid/hayesUB/main/"
         self.session: aiohttp.ClientSession = None
+        self.valid_extensions = {".py", ".pyc", ".sh", ".bat"}
         self.files_to_update: list = []
 
     async def initialize_session(self):
         self.session = aiohttp.ClientSession()
 
     def update_files_list(self):
-        python_files: list = [file for file in os.listdir(os.getcwd()) if file.endswith(".py")]
-        self.files_to_update = python_files
+        all_files = [f for f in os.listdir(os.getcwd()) if os.path.isfile(os.path.join(os.getcwd(), f))]
+        self.files_to_update = [file for file in all_files if any(file.endswith(ext) for ext in self.valid_extensions)]
 
     async def close_session(self):
         await self.session.close()
@@ -62,7 +63,10 @@ class Updater:
             remote_url = self.base_url + file_path
             local_path = os.path.join(os.getcwd(), file_path)
 
-            await self.update_file_if_needed(remote_url, local_path)
+            if not os.path.exists(local_path):
+                await self.download_file(remote_url, local_path)
+            else:
+                await self.update_file_if_needed(remote_url, local_path)
 
         await self.close_session()
 
