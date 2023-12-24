@@ -69,7 +69,7 @@ class Updater:
                 else:
                     print(f"Failed to retrieve files. Status code: {response.status}")
                     return []
-                
+
     async def check_files(self):
         await self.initialize_session()
         await self.update_files_list()
@@ -79,13 +79,15 @@ class Updater:
             local_path = os.path.join(os.getcwd(), file_path)
 
             if file_path not in self.repository_files:
-                print(f"File not found in the repository: {file_path}")
+                print(f"File not found in the repository: {local_path}")
+
             elif not os.path.exists(local_path):
-                print(f"Local file is missing: {file_path}")
+                print(f"Local file is missing: {local_path}")
+
             else:
                 local_hash = await self.calculate_file_hash(local_path)
                 remote_hash = await self.calculate_remote_file_hash(remote_url)
-                
+
                 if local_hash != remote_hash:
                     print(f'The file is out of date: {local_path}')
 
@@ -97,7 +99,7 @@ class Updater:
 
         for file_path in self.files_to_update:
             await self.update_files_list()
-            
+
             remote_url = self.base_url + file_path
             local_path = os.path.join(os.getcwd(), file_path)
 
@@ -105,7 +107,7 @@ class Updater:
                 local_path = os.path.join(os.getcwd(), file_path)
                 print(f"Deleting file: {local_path}")
                 os.remove(local_path)
-            
+
             else:
                 if not os.path.exists(local_path):
                     await self.download_file(remote_url, local_path)
