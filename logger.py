@@ -195,10 +195,9 @@ class Moon:
                 }
                 return json.dumps(log_data, separators=(',', ':'))
 
-    def __init__(self, name=__name__, log_file='logger.log', stream_handler: bool = True, file_handler: bool = True, disabled: bool = False, zipsize: int | None = 1024, stream_level: int = LogLevel.DEBUG, file_level: int = LogLevel.DEBUG):
+    def __init__(self, name=__name__, log_file='logger.log', stream_handler: bool = True, file_handler: bool = True, disabled: bool = False, stream_level: int = LogLevel.DEBUG, file_level: int = LogLevel.DEBUG):
         self.name = name
         self.log_file = log_file
-        self.zipsize = zipsize
         self.file_level = file_level
         self.stream_level = stream_level
 
