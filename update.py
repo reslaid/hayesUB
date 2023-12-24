@@ -1,7 +1,3 @@
-from utils import (
-    Utils
-)
-
 import asyncio
 import aiohttp
 import aiofiles
@@ -250,7 +246,7 @@ class Updater:
                 else:
                     print(f"Failed to retrieve files. Status code: {response.status}")
                     return []
-    
+
     async def get_content(url: str) -> bytes | str:
         async with aiohttp.ClientSession() as session:
             try:
@@ -263,7 +259,7 @@ class Updater:
             except aiohttp.ClientError as e:
                 print(f"Failed to download file. Error: {e}")
                 return None
-            
+
     async def save_content_to_file(content: str, file_path: str) -> bool:
         try:
             async with aiofiles.open(file_path, mode='wb') as file:
@@ -275,7 +271,7 @@ class Updater:
 
     async def load_req_file(self):
         await self.initialize_session()
-        
+
         local_req_file: str = os.path.join(
             os.getcwd(),
             self.req_filename
@@ -362,13 +358,13 @@ class Updater:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="HayesUB Updater.")
-    
+
     parser.add_argument(
-        "--check", 
-        action="store_true", 
+        "--check",
+        action="store_true",
         help="Check files for relevance"
     )
-    
+
     args = parser.parse_args()
 
     updater = Updater()
