@@ -369,39 +369,7 @@ if __name__ == "__main__":
         help="Check files for relevance"
     )
     
-    parser.add_argument(
-        '--auto-update', 
-        type=bool, 
-        nargs='?', 
-        const=True, 
-        default=None,
-        help='set the value for auto_update in the config'
-    )
-
-    parser.add_argument(
-        '--module-auto-update', 
-        type=bool, 
-        nargs='?', 
-        const=True, 
-        default=None,
-        help='set the value for module_auto_update in the config'
-    )
-
     args = parser.parse_args()
-
-    if args.module_auto_update is not None:
-        Utils.Config.config.set(
-            section='git',
-            option='module_auto_update',
-            value=args.module_auto_update
-        )
-
-    if args.auto_update is not None:
-        Utils.Config.config.set(
-            section='git',
-            option='auto_update',
-            value=args.auto_update
-        )
 
     updater = Updater()
     if args.check:
