@@ -66,8 +66,9 @@ class Updater:
 
         for local_file in set(self.files_to_update):
             if local_file not in repo_files:
-                print(f"Deleting file: {local_file}")
-                os.remove(local_file)
+                local_path = os.path.join(os.getcwd(), local_file)
+                print(f"Deleting file: {local_path}")
+                os.remove(local_path)
 
         for file_path in self.files_to_update:
             remote_url = self.base_url + file_path
