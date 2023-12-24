@@ -60,15 +60,15 @@ Make sure you have the following prerequisites installed on your system:
 
 **For Windows:**
    
-   ```bash
+   ``bash
    python -m auth
-   ```
+   ``
 
 **For Liunx/Termux:**
    
-   ```bash
+   ``bash
    python3 -m auth
-   ```
+   ``
 
 2. Change the following parameters according to your Telegram account:
     - `api_id`: Your Telegram API ID (get it from [my.telegram.org](https://my.telegram.org/))
