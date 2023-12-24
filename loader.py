@@ -25,11 +25,11 @@ import aiohttp
 class Module:
     _start_time: datetime = datetime.now()
 
+    tl = telethon
     Btn = Button
+
     utils = Utils
     Utils = Utils
-
-    tl = telethon
 
     _name: str = 'Unknown'
     _description: str = 'None'
@@ -40,6 +40,7 @@ class Module:
     _module_filename: dict = {}
 
     events = events
+
     CallbackQuery: events.CallbackQuery = events.CallbackQuery
     InlineQuery: events.InlineQuery = events.InlineQuery
 
@@ -78,16 +79,16 @@ class Module:
         cls._module_descriptions[cls._name] = cls.__doc__ if cls.__doc__ else 'None'
 
     @staticmethod
-    async def get_me() -> Any:
+    async def get_me() -> telethon.types.User | telethon.types.InputPeerUser:
         return await Module.client.get_me()
 
     @staticmethod
-    async def get_command(event):
+    async def get_command(event) -> str:
         message_parts = event.message.text.split(' ')
         return message_parts[0]
 
     @staticmethod
-    async def get_args(event, maxsplit=15):
+    async def get_args(event, maxsplit=15) -> list | str:
         message_parts = event.message.text.split(' ', maxsplit=maxsplit)
         return message_parts[1:]
 
