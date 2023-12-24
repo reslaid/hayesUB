@@ -58,7 +58,7 @@ Make sure you have the following prerequisites installed on your system:
 
 1. Open `config.cfg` in any text editor convenient for you.
 
--Or
+**Or**
 
 1. Use auth module
 
