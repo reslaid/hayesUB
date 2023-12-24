@@ -9,12 +9,19 @@ Make sure you have the following prerequisites installed on your system:
 - [Git](https://git-scm.com/)
 - [Python](https://www.python.org/) (version 3.8 or higher)
 
+### For Termux:
+
+- [Termux](https://termux.com/)
+
+
 ## Installation Steps
 
 1. Clone the HayesUB repository to your local machine:
 
     ```bash
-    git clone https://github.com/reslaid/hayesUB.git
+    git clone https://github.com/reslaid/hayesUB.git 
+    ```
+    ```bash
     cd hayesUB
     ```
 
@@ -25,7 +32,7 @@ Make sure you have the following prerequisites installed on your system:
     ```bash
     setup.bat
     ```
-
+    
 3. **For Linux:**
 
     Run the setup script:
@@ -36,7 +43,16 @@ Make sure you have the following prerequisites installed on your system:
 
     This script will install the necessary dependencies.
 
-4. Wait for the dependencies to be installed. Once the installation is complete, you're ready to configure HayesUB.
+4. **For Termux:**
+
+    ```bash
+    pkg install -y libffi openssl libexpat tsu python
+    ```
+    ```bash
+    pip install telethon aiohttp aiofiles prettytable PyYAML openai googletrans==4.0.0-rc1 pyfiglet
+    ```
+    
+5. Wait for the dependencies to be installed. Once the installation is complete, you're ready to configure HayesUB.
 
 ## Configuring HayesUB
 
