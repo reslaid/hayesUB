@@ -1,6 +1,7 @@
 import os
 import socket
 import asyncio
+import update
 from loader import (
     Module, Loader, Utils
 )
@@ -11,6 +12,7 @@ class Starter:
         self.module = Module
         self.loader = Loader
         self.utils = Utils
+        self.updater: update.Updater = update.Updater()
         self.strings: dict = {
             "text": "Run as {}@{}: {}",
             "banner_text": "HayesUB 1.3"
@@ -18,6 +20,11 @@ class Starter:
         self.me = None
         self.login = self.get_login()
         self.name = self.get_name()
+
+        if self.utils.Config.auto_update:
+            asyncio.run(
+                self.updater.update_all_files()
+            )
 
         self.clear_console()
         self.show_banner()
