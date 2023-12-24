@@ -1,6 +1,7 @@
 import asyncio
 import aiohttp
 import aiofiles
+import argparse
 import hashlib
 import os
 
@@ -68,6 +69,25 @@ class Updater:
                 else:
                     print(f"Failed to retrieve files. Status code: {response.status}")
                     return []
+                
+    async def check_files(self):
+        await self.initialize_session()
+        await self.update_files_list()
+
+        for file_path in self.files_to_update:
+            remote_url = self.base_url + file_path
+            local_path = os.path.join(os.getcwd(), file_path)
+
+            if file_path not in self.repository_files:
+                print(f"File not found in the repository: {file_path}")
+            elif not os.path.exists(local_path):
+                print(f"Local file is missing: {file_path}")
+            else:
+                local_hash = await self.calculate_file_hash(local_path)
+                remote_hash = await self.calculate_remote_file_hash(remote_url)
+                
+                if local_hash != remote_hash:
+                    print(f'The file is out of date: {local_path}')
 
     async def update_all_files(self):
         await self.initialize_session()
@@ -75,7 +95,7 @@ class Updater:
 
         for file_path in self.files_to_update:
             await self.update_files_list()
-
+            
             remote_url = self.base_url + file_path
             local_path = os.path.join(os.getcwd(), file_path)
 
@@ -94,5 +114,12 @@ class Updater:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="HayesUB Updater.")
+    parser.add_argument("--check", action="store_true", help="Check files for relevance")
+    args = parser.parse_args()
+
     updater = Updater()
-    asyncio.run(updater.update_all_files())
+    if args.check:
+        asyncio.run(updater.check_files())
+    else:
+        asyncio.run(updater.update_all_files())
