@@ -14,7 +14,7 @@ function install_package {
 }
 
 function install_library {
-    for library in "$@"; do
+    while IFS= read -r library; do
         if ! pip3 show "$library" &>/dev/null; then
             echo "[$library]: installing.."
             pip3 install "$library"
@@ -22,13 +22,11 @@ function install_library {
         else
             echo "[$library]: found successfully."
         fi
-    done
+    done < req.txt
 }
-
-libraries=("configparser" "psutil" "telethon" "aiohttp" "aiofiles" "prettytable" "PyYAML" "googletrans" "pyfiglet")
 
 install_package "python3" "sudo apt update && sudo apt install -y python3"
 install_package "pip3" "sudo apt install -y python3-pip"
-install_library "${libraries[@]}"
+install_library
 
 echo "[Setup]: successfully."
