@@ -1,7 +1,6 @@
 import os
 import socket
 import asyncio
-import pyfiglet
 from loader import (
     Module, Loader, Utils
 )
@@ -21,14 +20,14 @@ class Starter:
         self.name = self.get_name()
 
         self.clear_console()
-        self.get_banner()
+        self.show_banner()
         asyncio.run(self.run())
 
     def clear_console(self):
         os.system('cls' if os.name == 'nt' else 'clear')
         return None
 
-    async def get_text_banner(self):
+    async def show_text_banner(self):
         string = self.strings.get("text", "Run as {}: {}").format(self.login, self.name, self.me.id)
         if self.utils.Config.LoaderActions:
             self.loader.moon.debug(string)
@@ -41,10 +40,11 @@ class Starter:
     def get_name(self):
         return os.environ.get("NAME", "name") if os.name != 'nt' else socket.gethostname()
 
-    def get_banner(self):
-        text = self.strings.get("banner_text", "Hayes")
-        f = pyfiglet.Figlet(font='slant')
-        print(f.renderText(text))
+    def show_banner(self):
+        self.utils.Banner.show(
+            text=self.strings.get("banner_text", "Hayes"),
+            font='slant'
+        )
 
     async def start_client(self):
         await self.module.client.start()
@@ -64,7 +64,7 @@ class Starter:
 
     async def run(self):
         await self.start_client()
-        await self.get_text_banner()
+        await self.show_text_banner()
         await self.run_client()
 
 
