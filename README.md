@@ -7,7 +7,7 @@ HayesUB is a userbot for Telegram, designed to provide additional functionality 
 Make sure you have the following prerequisites installed on your system:
 
 - [Git](https://git-scm.com/)
-- [Python](https://www.python.org/) (version 3.7+ (or higher))
+- [Python](https://www.python.org/) 3.7+
 
 ### For Termux:
 
