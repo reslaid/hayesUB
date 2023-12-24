@@ -1,4 +1,4 @@
 @echo off
 echo Installing libraries...
-python -m pip install telethon psutil aiohttp aiofiles prettytable PyYAML openai googletrans pyfiglet
+python -m pip -r req.txt
 echo Installation complete.
