@@ -59,11 +59,13 @@ Make sure you have the following prerequisites installed on your system:
 1. Use auth module
 
 **For Windows:**
+   
    ```bash
    python -m auth
    ```
    
 **For Linux/Termux:**
+    
     ```bash
     python3 -m auth
     ```
