@@ -5,6 +5,16 @@ import argparse
 import hashlib
 import os
 
+from enum import IntEnum
+
+
+class CheckResult(IntEnum):
+    ACTUAL: int = 0
+    RATE_LIMIT: int = 1
+    NOT_FOUND_IN_REPO: int = 2
+    FILE_MISSING: int = 3
+    OUTDATED: int = 4
+
 
 class Updater:
     def __init__(self):
@@ -114,22 +124,27 @@ class Updater:
         await self.close_session()
 
     async def check_files(self):
+        result: dict = {}
+
         await self.initialize_session()
         await self.update_files_list()
 
         if not self.repository_files:
+            result["code"] = CheckResult.RATE_LIMIT
             print("API rate limit exceeded")
             await self.close_session()
-            return
+            return result
 
         for file_path in self.files_to_update:
             remote_url = self.base_url + file_path
             local_path = os.path.join(os.getcwd(), file_path)
 
             if file_path not in self.repository_files:
+                result[file_path] = {"code": CheckResult.NOT_FOUND_IN_REPO}
                 print(f"File not found in the repository: {local_path}")
 
             elif not os.path.exists(local_path):
+                result[file_path] = {"code": CheckResult.FILE_MISSING}
                 print(f"Local file is missing: {local_path}")
 
             else:
@@ -137,9 +152,14 @@ class Updater:
                 remote_hash = await self.calculate_remote_file_hash(remote_url)
 
                 if local_hash != remote_hash:
+                    result[file_path] = {"code": CheckResult.OUTDATED}
                     print(f'The file is out of date: {local_path}')
 
+                else:
+                    result[file_path] = CheckResult.ACTUAL
+
         await self.close_session()
+        return result
 
     async def update_all_files(self):
         await self.initialize_session()
