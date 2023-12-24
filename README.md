@@ -120,6 +120,20 @@ Before updating, navigate to the installation directory:
 cd path\to\hayesUB
 ```
 
+To check for updates, run the following command:
+
+- **For Windows:**
+
+    ```bash
+    python -m update --check
+    ```
+
+- **For Linux/Termux:**
+
+    ```bash
+    python3 -m update --check
+    ```
+
 Then, run the update command:
 
 - **For Windows:**
