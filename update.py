@@ -119,6 +119,7 @@ class Updater:
 
         if not self.repository_files:
             print("API rate limit exceeded")
+            await self.close_session()
             return
 
         for file_path in self.files_to_update:
@@ -146,6 +147,7 @@ class Updater:
 
         if not self.repository_files:
             print("API rate limit exceeded")
+            await self.close_session()
             return
 
         for file_path in self.files_to_update:
