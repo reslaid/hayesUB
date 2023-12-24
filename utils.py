@@ -374,8 +374,15 @@ class Utils:
         app_version: str = config.get('args', 'app_version')
         lang_code: str = config.get('args', 'lang_code')
         entity_cache_limit: int = config.getint('args', 'entity_cache_limit')
-        auto_update: bool = config.getboolean('git', 'auto_update')
-        module_auto_update: bool = config.getboolean('git', 'module_auto_update')        
+        
+        try:
+            auto_update: bool = config.getboolean('git', 'auto_update')
+            module_auto_update: bool = config.getboolean('git', 'module_auto_update')        
+        
+        except configparser.NoOptionError:
+            auto_update: bool = True
+            module_auto_update: bool = True
+
         ModuleActions: bool = config.getboolean('logging', 'module')
         LoaderActions: bool = config.getboolean('logging', 'loader')
         ClientActions: bool = config.getboolean('logging', 'client')
