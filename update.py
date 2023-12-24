@@ -70,7 +70,29 @@ class Updater:
                 else:
                     print(f"Failed to retrieve files. Status code: {response.status}")
                     return []
-                
+    
+    async def get_content(url: str) -> bytes | str:
+        async with aiohttp.ClientSession() as session:
+            try:
+                async with session.get(url) as response:
+                    if response.status == 200:
+                        return await response.read()
+                    else:
+                        print(f"Failed to download file. Status code: {response.status}")
+                        return None
+            except aiohttp.ClientError as e:
+                print(f"Failed to download file. Error: {e}")
+                return None
+            
+    async def save_content_to_file(content: str, file_path: str) -> bool:
+        try:
+            async with aiofiles.open(file_path, mode='wb') as file:
+                await file.write(content)
+            return True
+        except IOError as e:
+            print(f"Error saving content to file: {e}")
+            return False
+
     async def load_req_file(self):
         await self.initialize_session()
         
@@ -80,9 +102,13 @@ class Updater:
         )
 
         if not os.path.exists(local_req_file):
-            await self.download_file(
+            content = await self.get_content(
                 url="https://raw.githubusercontent.com/reslaid/hayesUB/main/req.txt",
                 local_path=local_req_file
+            )
+            await self.save_content_to_file(
+                content=content,
+                file_path=local_req_file
             )
 
         await self.close_session()
@@ -90,6 +116,10 @@ class Updater:
     async def check_files(self):
         await self.initialize_session()
         await self.update_files_list()
+
+        if not self.repository_files:
+            print("API rate limit exceeded")
+            return
 
         for file_path in self.files_to_update:
             remote_url = self.base_url + file_path
@@ -113,6 +143,10 @@ class Updater:
     async def update_all_files(self):
         await self.initialize_session()
         await self.update_files_list()
+
+        if not self.repository_files:
+            print("API rate limit exceeded")
+            return
 
         for file_path in self.files_to_update:
             await self.update_files_list()
