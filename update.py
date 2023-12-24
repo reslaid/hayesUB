@@ -74,6 +74,8 @@ class Updater:
         await self.update_files_list()
 
         for file_path in self.files_to_update:
+            await self.update_files_list()
+
             remote_url = self.base_url + file_path
             local_path = os.path.join(os.getcwd(), file_path)
 
