@@ -142,10 +142,6 @@ class ModuleUpdater:
                 result[file_path] = {"code": CheckResult.NOT_FOUND_IN_REPO}
                 print(f"File not found in the repository: {local_path}")
 
-            elif not os.path.exists(local_path):
-                result[file_path] = {"code": CheckResult.FILE_MISSING}
-                print(f"Local file is missing: {local_path}")
-
             else:
                 local_hash = await self.calculate_file_hash(local_path)
                 remote_hash = await self.calculate_remote_file_hash(remote_url)
@@ -181,10 +177,7 @@ class ModuleUpdater:
                 os.remove(local_path)
 
             else:
-                if not os.path.exists(local_path):
-                    await self.download_file(remote_url, local_path)
-                else:
-                    await self.update_file_if_needed(remote_url, local_path)
+                await self.update_file_if_needed(remote_url, local_path)
 
         await self.close_session()
 
