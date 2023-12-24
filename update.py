@@ -11,7 +11,7 @@ class Updater:
         self.base_url: str = "https://raw.githubusercontent.com/reslaid/hayesUB/main/"
         self.repo_url: str = "https://api.github.com/repos/reslaid/hayesUB/contents/"
         self.session: aiohttp.ClientSession = None
-        self.valid_extensions = {".py", ".pyc", ".sh", ".bat"}
+        self.valid_extensions = {".py", ".pyc", ".sh", ".bat", ".txt"}
         self.files_to_update: list = []
         self.repository_files: list = []
 
