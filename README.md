@@ -80,17 +80,9 @@ Now that you've configured HayesUB and obtained your Telegram User ID, you're re
 
 Before running HayesUB, make sure to navigate to the installation directory:
 
-- **For Windows:**
-
-    ```bash
-    cd path\to\hayesUB
-    ```
-
-- **For Linux:**
-
-    ```bash
-    cd path/to/hayesUB
-    ```
+```bash
+cd path\to\hayesUB
+```
 
 Now, you can run HayesUB:
 
@@ -105,6 +97,11 @@ Now, you can run HayesUB:
     ```bash
     python3 -m run
     ```
+    
+- **For Termux:**
+   ```bash
+   python3 -m run
+   ```
 
 ## Updating HayesUB
 
@@ -133,6 +130,12 @@ Then, run the update command:
     ```
 
 - **For Linux:**
+
+    ```bash
+    python3 -m update
+    ```
+
+- **For Termux:**
 
     ```bash
     python3 -m update
