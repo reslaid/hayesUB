@@ -1,0 +1,9 @@
+telethon
+psutil
+aiohttp
+aiofiles
+prettytable
+PyYAML
+openai
+googletrans
+pyfiglet
