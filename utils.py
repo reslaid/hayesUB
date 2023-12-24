@@ -11,7 +11,6 @@ import asyncio
 import aiofiles
 import datetime
 import configparser
-import argparse
 
 
 class Utils:
@@ -374,11 +373,11 @@ class Utils:
         app_version: str = config.get('args', 'app_version')
         lang_code: str = config.get('args', 'lang_code')
         entity_cache_limit: int = config.getint('args', 'entity_cache_limit')
-        
+
         try:
             auto_update: bool = config.getboolean('git', 'auto_update')
-            module_auto_update: bool = config.getboolean('git', 'module_auto_update')        
-        
+            module_auto_update: bool = config.getboolean('git', 'module_auto_update')
+
         except configparser.NoOptionError:
             auto_update: bool = True
             module_auto_update: bool = True
@@ -388,7 +387,7 @@ class Utils:
         ClientActions: bool = config.getboolean('logging', 'client')
         UtilsActions: bool = config.getboolean('logging', 'utils')
 
-        modules_repo: str = 'https://raw.githubusercontent.com/reslaid/modules/main'
+        modules_repo: str = 'https://raw.githubusercontent.com/reslaid/modules/main/Hayes-TL'
 
         def getval(section: str, value: str) -> str:
             return Utils.Config.config.get(section, value)
@@ -398,7 +397,7 @@ class Utils:
 
         def get_config_path() -> str:
             return Utils.Config.config_path
-        
+
         def save_config():
             with open(Utils.Config.config_path, 'w') as config_file:
                 Utils.Config.config.write(config_file)
