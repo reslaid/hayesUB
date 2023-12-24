@@ -57,8 +57,20 @@ Make sure you have the following prerequisites installed on your system:
 ## Configuring HayesUB
 
 1. Open `config.cfg` in any text editor convenient for you.
+ **OR**
 
-2. Change the following parameters according to your Telegram account:
+1. Use built-in authorization
+**For Windows:**
+   ```bash
+   python -m auth
+   ```
+   
+**For Linux/Termux:**
+    ```bash
+    python3 -m auth
+    ```
+
+4. Change the following parameters according to your Telegram account:
     - `api_id`: Your Telegram API ID (get it from [my.telegram.org](https://my.telegram.org/))
     - `api_hash`: Your Telegram API Hash (get it from [my.telegram.org](https://my.telegram.org/))
     - `api_token`: Your Telegram API Token (get it from [BotFather](https://core.telegram.org/bots#botfather))
