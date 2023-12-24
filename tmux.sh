@@ -27,6 +27,12 @@ function install_library {
 
 libraries=("configparser" "psutil" "telethon" "aiohttp" "aiofiles" "prettytable" "PyYAML" "googletrans" "pyfiglet")
 
+eval "pkg update"
+
+install_package "ffi" "pkg install -y libffi"
+install_package "ssl" "pkg install -y opessl"
+install_package "expat" "pkg install -y libexpat"
+install_package "tsu" "pkg install -y tsu"
 install_package "python" "pkg install -y python"
 install_library "${libraries[@]}"
 
