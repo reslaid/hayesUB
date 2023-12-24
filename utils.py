@@ -398,6 +398,10 @@ class Utils:
 
         def get_config_path() -> str:
             return Utils.Config.config_path
+        
+        def save_config():
+            with open(Utils.Config.config_path, 'w') as config_file:
+                Utils.Config.config.write(config_file)
 
     class Banner:
         @staticmethod
