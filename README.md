@@ -63,12 +63,12 @@ Make sure you have the following prerequisites installed on your system:
    ```bash
    python -m auth
    ```
-   
-**For Linux/Termux:**
 
-    ```bash
-python3 -m auth
-    ```
+**For Liunx/Termux:**
+   
+   ```bash
+   python3 -m auth
+   ```
 
 2. Change the following parameters according to your Telegram account:
     - `api_id`: Your Telegram API ID (get it from [my.telegram.org](https://my.telegram.org/))
@@ -104,16 +104,11 @@ Now, you can run HayesUB:
     python -m run
     ```
 
-- **For Linux:**
+- **For Linux/Termux:**
 
     ```bash
     python3 -m run
     ```
-    
-- **For Termux:**
-   ```bash
-   python3 -m run
-   ```
 
 ## Updating HayesUB
 
@@ -133,13 +128,7 @@ Then, run the update command:
     python -m update
     ```
 
-- **For Linux:**
-
-    ```bash
-    python3 -m update
-    ```
-
-- **For Termux:**
+- **For Linux/Termux:**
 
     ```bash
     python3 -m update
