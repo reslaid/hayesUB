@@ -381,10 +381,10 @@ class Utils:
 
         def getval(section: str, value: str) -> str:
             return Utils.Config.config.get(section, value)
-        
+
         def get_config() -> configparser.ConfigParser:
             return Utils.Config.config
-        
+
         def get_config_path() -> str:
             return Utils.Config.config_path
 
