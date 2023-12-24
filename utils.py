@@ -6,6 +6,7 @@ from typing import Any, List
 import os
 import ast
 import zipfile
+import pyfiglet
 import asyncio
 import aiofiles
 import datetime
@@ -353,11 +354,13 @@ class Utils:
 
     class Config:
         config: configparser.ConfigParser = configparser.ConfigParser()
-        config.read('config.cfg')
+        config_path = 'config.cfg'
+        config.read(config_path)
         api_id: str = config.get('client', 'api_id')
         api_hash: str = config.get('client', 'api_hash')
         api_token: str = config.get('client', 'api_token')
-        admin_ids: list = [config.get('client', 'admin_id')]
+        admin_id: str = config.get('client', 'admin_id')
+        admin_ids: list = [admin_id]
         session_name: str = config.get('client', 'session_name')
         inline_session_name: str = config.get('client', 'inline_session_name')
         ipv6: bool = config.getboolean('args', 'ipv6')
@@ -378,6 +381,25 @@ class Utils:
 
         def getval(section: str, value: str) -> str:
             return Utils.Config.config.get(section, value)
+        
+        def get_config() -> configparser.ConfigParser:
+            return Utils.Config.config
+        
+        def get_config_path() -> str:
+            return Utils.Config.config_path
+
+    class Banner:
+        @staticmethod
+        def figlet(font: str = 'slant'):
+            return pyfiglet.Figlet(font=font)
+
+        @staticmethod
+        def get(text, font: str = 'slant'):
+            return Utils.Banner.figlet(font=font).renderText(text)
+
+        @staticmethod
+        def show(text, font: str = 'slant'):
+            print(Utils.Banner.get(text, font=font))
 
     base_logger: Moon = Moon(
         name='Utils',
