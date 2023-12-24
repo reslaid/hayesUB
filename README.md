@@ -49,7 +49,7 @@ Make sure you have the following prerequisites installed on your system:
     pkg install -y libffi openssl libexpat tsu python
     ```
     ```bash
-    pip install telethon aiohttp aiofiles prettytable PyYAML openai googletrans==4.0.0-rc1 pyfiglet
+    pip install telethon psutil aiohttp aiofiles prettytable PyYAML openai googletrans pyfiglet
     ```
     
 5. Wait for the dependencies to be installed. Once the installation is complete, you're ready to configure HayesUB.
