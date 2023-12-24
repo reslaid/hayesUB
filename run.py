@@ -2,6 +2,7 @@ import os
 import socket
 import asyncio
 import update
+import sys
 from loader import (
     Module, Loader, Utils
 )
@@ -12,6 +13,7 @@ class Starter:
         self.module = Module
         self.loader = Loader
         self.utils = Utils
+        self.module_updater: update.ModuleUpdater = update.ModuleUpdater()
         self.updater: update.Updater = update.Updater()
         self.strings: dict = {
             "text": "Run as {}@{}: {}",
@@ -24,6 +26,11 @@ class Starter:
         if self.utils.Config.auto_update:
             asyncio.run(
                 self.updater.update_all_files()
+            )
+
+        if self.utils.Config.module_auto_update:
+            asyncio.run(
+                self.module_updater.update_all_files()
             )
 
         self.clear_console()
