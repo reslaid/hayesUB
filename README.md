@@ -109,17 +109,9 @@ To update HayesUB to the latest version, use the following commands:
 
 Before updating, navigate to the installation directory:
 
-- **For Windows:**
-
-    ```bash
-    cd path\to\hayesUB
-    ```
-
-- **For Linux:**
-
-    ```bash
-    cd path/to/hayesUB
-    ```
+```bash
+cd path\to\hayesUB
+```
 
 Then, run the update command:
 
