@@ -11,7 +11,8 @@ class Updater:
         self.base_url: str = "https://raw.githubusercontent.com/reslaid/hayesUB/main/"
         self.repo_url: str = "https://api.github.com/repos/reslaid/hayesUB/contents/"
         self.session: aiohttp.ClientSession = None
-        self.valid_extensions = [".py", ".pyc", ".sh", ".bat", ".txt"]
+        self.req_filename: str = "req.txt"
+        self.valid_extensions = [".py", ".pyc", ".sh", ".bat"]
         self.files_to_update: list = []
         self.repository_files: list = []
 
@@ -69,6 +70,22 @@ class Updater:
                 else:
                     print(f"Failed to retrieve files. Status code: {response.status}")
                     return []
+                
+    async def load_req_file(self):
+        await self.initialize_session()
+        
+        local_req_file: str = os.path.join(
+            os.getcwd(),
+            self.req_filename
+        )
+
+        if not os.path.exists(local_req_file):
+            await self.download_file(
+                url="https://raw.githubusercontent.com/reslaid/hayesUB/main/req.txt",
+                local_path=local_req_file
+            )
+
+        await self.close_session()
 
     async def check_files(self):
         await self.initialize_session()
@@ -127,3 +144,5 @@ if __name__ == "__main__":
         asyncio.run(updater.check_files())
     else:
         asyncio.run(updater.update_all_files())
+
+    asyncio.run(updater.load_req_file())
