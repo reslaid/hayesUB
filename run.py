@@ -2,7 +2,6 @@ import os
 import socket
 import asyncio
 import update
-import sys
 from loader import (
     Module, Loader, Utils
 )
