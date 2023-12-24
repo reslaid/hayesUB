@@ -8,16 +8,19 @@ import os
 class Updater:
     def __init__(self):
         self.base_url: str = "https://raw.githubusercontent.com/reslaid/hayesUB/main/"
+        self.repo_url: str = "https://api.github.com/repos/reslaid/hayesUB/contents/"
         self.session: aiohttp.ClientSession = None
         self.valid_extensions = {".py", ".pyc", ".sh", ".bat"}
         self.files_to_update: list = []
+        self.repository_files: list = []
 
     async def initialize_session(self):
         self.session = aiohttp.ClientSession()
 
-    def update_files_list(self):
+    async def update_files_list(self):
         all_files = [f for f in os.listdir(os.getcwd()) if os.path.isfile(os.path.join(os.getcwd(), f))]
         self.files_to_update = [file for file in all_files if any(file.endswith(ext) for ext in self.valid_extensions)]
+        self.repository_files = await self.get_repository_files()
 
     async def close_session(self):
         await self.session.close()
@@ -55,29 +58,35 @@ class Updater:
                 hasher.update(await response.read())
                 return hasher.hexdigest()
 
+    async def get_repository_files(self):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(self.repo_url) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    files = [item["name"] for item in data if item["type"] == "file"]
+                    return files
+                else:
+                    print(f"Failed to retrieve files. Status code: {response.status}")
+                    return []
+
     async def update_all_files(self):
         await self.initialize_session()
-        self.update_files_list()
-
-        repo_files = set()
-        async with self.session.get(self.base_url) as response:
-            if response.status == 200:
-                repo_files = {filename for filename in await response.text().splitlines()}
-
-        for local_file in set(self.files_to_update):
-            if local_file not in repo_files:
-                local_path = os.path.join(os.getcwd(), local_file)
-                print(f"Deleting file: {local_path}")
-                os.remove(local_path)
+        await self.update_files_list()
 
         for file_path in self.files_to_update:
             remote_url = self.base_url + file_path
             local_path = os.path.join(os.getcwd(), file_path)
 
-            if not os.path.exists(local_path):
-                await self.download_file(remote_url, local_path)
+            if file_path not in self.repository_files:
+                local_path = os.path.join(os.getcwd(), file_path)
+                print(f"Deleting file: {local_path}")
+                os.remove(local_path)
+            
             else:
-                await self.update_file_if_needed(remote_url, local_path)
+                if not os.path.exists(local_path):
+                    await self.download_file(remote_url, local_path)
+                else:
+                    await self.update_file_if_needed(remote_url, local_path)
 
         await self.close_session()
 
