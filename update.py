@@ -89,6 +89,8 @@ class Updater:
                 if local_hash != remote_hash:
                     print(f'The file is out of date: {local_path}')
 
+        await self.close_session()
+
     async def update_all_files(self):
         await self.initialize_session()
         await self.update_files_list()
