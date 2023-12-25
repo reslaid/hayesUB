@@ -436,7 +436,7 @@ class Loader:
             return []
 
     @staticmethod
-    async def hook_module(module_file: str, _compile: int = 0) -> None:
+    async def hook_module(module_file: str) -> None:
         await Loader.update_module_list()
 
         if module_file in Loader.hooked_modules:
@@ -447,33 +447,11 @@ class Loader:
         module_name: str = Loader.get_module_name(module_file)
 
         try:
-            if _compile == 2:
-                spec = importlib.util.spec_from_file_location(module_path, Loader.get_module(module_file=module_file))
-                module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
-                Loader.hooked_modules[module_file] = [name for name, obj in inspect.getmembers(module) if inspect.isclass(obj)]
 
-            elif _compile == 1:
-                async with aiofiles.open(module_path, mode='r', encoding='utf-8', errors='ignore') as file:
-                    data = await file.read()
-                    compiled_data = compile(data, module_path, 'exec')
-
-                await Loader.hook(compiled_data)
-
-                classes = await Loader.get_module_classes(module_path)
-                Loader.hooked_modules[module_file] = classes
-
-            elif _compile == 0:
-                async with aiofiles.open(module_path, mode='r', encoding='utf-8', errors='ignore') as file:
-                    data = await file.read()
-
-                await Loader.hook(data)
-
-                classes = await Loader.get_module_classes(module_path)
-                Loader.hooked_modules[module_file] = classes
-
-            else:
-                raise ValueError(f"Invalid value for _compile: {_compile}")
+            spec = importlib.util.spec_from_file_location(module_path, Loader.get_module(module_file=module_file))
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            Loader.hooked_modules[module_file] = [name for name, obj in inspect.getmembers(module) if inspect.isclass(obj)]
 
             Loader.moon.debug(f"Module '{module_name}' Hooked.")
             Loader.loaded_modules.add(module_name)
@@ -482,25 +460,19 @@ class Loader:
             Loader.moon.error(f"'{module_name}': {e}")
 
     @staticmethod
-    async def hook_module_adv(module_file: str, _compile: int = 0) -> None:
+    async def hook_module_adv(module_file: str) -> None:
         await Loader.update_module_list()
-
-        if module_file in Loader.module_files:
-            if _compile < 2:
-                await Loader.hook_module(module_file=module_file, _compile=_compile)
-
-        elif module_file in Loader.compiled_module_files:
-            await Loader.hook_module(module_file=module_file, _compile=2)
+        await Loader.hook_module(module_file=module_file)
 
     @staticmethod
-    async def hook_modules(_compile: int = 0) -> None:
+    async def hook_modules() -> None:
         await Loader.update_module_list()
 
         for module_file in Loader.module_files:
-            await Loader.hook_module(module_file=module_file, _compile=_compile)
+            await Loader.hook_module(module_file=module_file)
 
         for compiled_module_file in Loader.compiled_module_files:
-            await Loader.hook_module(module_file=compiled_module_file, _compile=2)
+            await Loader.hook_module(module_file=compiled_module_file)
 
     @staticmethod
     async def unhook_module(module_name: str) -> None:
