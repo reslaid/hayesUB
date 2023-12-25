@@ -364,7 +364,6 @@ class Loader:
     moon_id: int = id(moon)
     loaded_modules: set = set()
     hooked_modules: dict = {}
-    githubs: list
 
     @staticmethod
     async def update_module_list() -> None:
