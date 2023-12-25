@@ -19,7 +19,7 @@ class CheckResult(IntEnum):
 class ModuleUpdater:
     def __init__(self):
         self.base_url: str = "https://raw.githubusercontent.com/reslaid/modules/main/Hayes-TL/"
-        self.repo_url: str = "https://api.github.com/repos/reslaid/modules/contents/"
+        self.repo_url: str = "https://api.github.com/repos/reslaid/modules/contents/Hayes-TL"
         self.session: aiohttp.ClientSession = None
         self.valid_extensions = [".py", ".pyc"]
         self.files_to_update: list = []
