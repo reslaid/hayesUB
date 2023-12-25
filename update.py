@@ -171,13 +171,7 @@ class ModuleUpdater:
             remote_url = self.base_url + file_path
             local_path = os.path.join(self.modules_dir, file_path)
 
-            if file_path not in self.repository_files:
-                local_path = os.path.join(self.modules_dir, file_path)
-                print(f"Deleting file: {local_path}")
-                os.remove(local_path)
-
-            else:
-                await self.update_file_if_needed(remote_url, local_path)
+            await self.update_file_if_needed(remote_url, local_path)
 
         await self.close_session()
 
