@@ -154,4 +154,4 @@ Then, run the update command:
      
 Now, HayesUB should be up and running on your machine. You can explore the additional functionality provided by the userbot.
 
-Feel free to check out the [HayesUB GitHub repository](https://github.com/reslaid/hayesUB) for more details and updates. If during installation you encounter any problems or have questions, write to our [support chat](https://t.me/hayes_support_chat) in a telegram and ask a question that concerns you to get help.
+Feel free to check out the [HayesUB GitHub repository](https://github.com/reslaid/hayesUB) for more details and updates.
