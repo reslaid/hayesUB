@@ -92,6 +92,11 @@ class Module:
         message_parts = event.message.text.split(' ', maxsplit=maxsplit)
         return message_parts[1:]
 
+    @staticmethod
+    async def get_str_args(event) -> str:
+        args_array = await Module.get_args(event)
+        return " ".join(args_array)
+
     @classmethod
     def get_logger(cls, name: str | None = None, filename: str | None = "module.log", formatter: Moon.Presets = Moon.Presets.Syslog()) -> Moon:
         logger: Moon = Moon(
