@@ -46,7 +46,7 @@ Make sure you have the following prerequisites installed on your system:
 4. **For Termux:**
 
     ```bash
-    pkg install -y libffi openssl libexpat python clang make openssl-dev rust
+    pkg install -y libffi openssl libexpat python clang make
     ```
     ```bash
     pip3 install telethon psutil aiohttp aiofiles prettytable PyYAML openai googletrans pyfiglet
